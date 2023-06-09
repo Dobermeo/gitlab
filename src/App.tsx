@@ -6,8 +6,8 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Breadcrumb, Layout, Menu, MenuProps } from 'antd';
+import Presentation from "./presentation";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -34,6 +34,7 @@ const items: MenuItem[] = [
     getItem('Tom', '3'),
     getItem('Bill', '4'),
     getItem('Alex', '5'),
+    getItem('David Bermeo', '6'),
   ]),
   getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
   getItem('Files', '9', <FileOutlined />),
@@ -41,25 +42,30 @@ const items: MenuItem[] = [
 
 const App: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  const [selectedItemKey, setSelectedItemKey] = useState('1');
+  
+  const onMenuClick = (item: any) => {
+    setSelectedItemKey(item.key);
+  };
+
+  // Define un color de fondo constante para el ejemplo, cambialo según tu necesidad
+  const colorBgContainer = "#fff";
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={onMenuClick} />
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }} />
         <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            <Breadcrumb.Item>{selectedItemKey === '6' ? 'David Bermeo': 'David'}</Breadcrumb.Item>
           </Breadcrumb>
           <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
-            Bill is a cat.
+            {selectedItemKey === '6' ? <Presentation /> : 'David Bermeo'}
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
